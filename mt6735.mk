@@ -88,6 +88,7 @@ PRODUCT_PACKAGES += \
 # Shims
 PRODUCT_PACKAGES += \
     libshim_audio \
+    libshim_icu \
     libshim_ifc \
     libshim_vt \
     libshim_xlog
