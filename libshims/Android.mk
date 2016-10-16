@@ -19,3 +19,9 @@ LOCAL_SRC_FILES := ifc_ccmni.c
 LOCAL_MODULE := libshim_ifc
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := audio_voice_unlock.c
+LOCAL_MODULE := libshim_audio
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_SHARED_LIBRARY)
