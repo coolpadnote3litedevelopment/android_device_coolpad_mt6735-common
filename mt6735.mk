@@ -87,6 +87,7 @@ PRODUCT_PACKAGES += \
 
 # Shims
 PRODUCT_PACKAGES += \
+    libshim_audio \
     libshim_ifc
 
 # Radio dependencies
