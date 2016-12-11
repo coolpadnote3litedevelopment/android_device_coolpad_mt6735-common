@@ -1,2 +1,5 @@
 # Wifi
 allow netd wmtWifi_device:chr_file w_file_perms;
+
+allow netd dhcp_data_file:dir setattr;
+allow netd wifi_data_file:dir create_dir_perms;
