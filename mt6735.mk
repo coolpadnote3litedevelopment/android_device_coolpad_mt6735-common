@@ -85,6 +85,10 @@ PRODUCT_PACKAGES += \
     power.default \
     power.mt6735
 
+# Shims
+PRODUCT_PACKAGES += \
+    libshim_ifc
+
 # Radio dependencies
 PRODUCT_PACKAGES += \
     muxreport \
