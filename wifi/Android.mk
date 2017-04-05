@@ -18,6 +18,7 @@ ifeq ($(MTKPATH),)
 
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := wifi_hal.cpp
+LOCAL_HEADER_LIBRARIES := libhardware_legacy_headers
 LOCAL_MODULE := libwifi-hal-mt66xx
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_STATIC_LIBRARY)
