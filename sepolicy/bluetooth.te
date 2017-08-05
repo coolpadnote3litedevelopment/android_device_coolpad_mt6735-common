@@ -7,3 +7,6 @@ allow bluetooth nvdata_file:file rw_file_perms;
 
 # libnvram probes the raw nvram partition before reading BT_Addr from nvdata
 dontaudit bluetooth nvram_device:blk_file { open read write };
+
+get_prop(bluetooth, nvram_prop)
+get_prop(bluetooth, wmt_prop)
