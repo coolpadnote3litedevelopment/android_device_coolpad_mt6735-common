@@ -61,6 +61,10 @@ PRODUCT_PACKAGES += \
     libfs_mgr
 
 PRODUCT_PACKAGES += \
+    android.hardware.audio@2.0-impl \
+    android.hardware.audio.effect@2.0-impl
+
+PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_device.xml:system/etc/audio_device.xml
