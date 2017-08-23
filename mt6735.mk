@@ -87,6 +87,10 @@ PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-impl \
     libion
 
+# DRM
+PRODUCT_PACKAGES += \
+    android.hardware.drm@1.0-impl
+
 # FM
 PRODUCT_PACKAGES += \
     libfmjni \
