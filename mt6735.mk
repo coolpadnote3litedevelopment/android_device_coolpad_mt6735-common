@@ -130,6 +130,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl
 
+PRODUCT_PACKAGES += \
+    sensors.mt6735
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/sensors/_hals.conf:system/vendor/etc/sensors/_hals.conf
+
 # Shims
 PRODUCT_PACKAGES += \
     libshim_audio \
