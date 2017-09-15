@@ -1,6 +1,7 @@
 # Radio devices
 type ccci_device, dev_type;
 type stpbt_device, dev_type;
+type gps_device, dev_type;
 type stpgps_device, dev_type;
 type stpwmt_device, dev_type;
 type hwmsensor_device, dev_type;
