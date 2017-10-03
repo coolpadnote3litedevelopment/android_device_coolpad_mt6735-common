@@ -3,7 +3,7 @@ type netdiag ,domain;
 
 init_daemon_domain(netdiag)
 
-allow netdiag self:packet_socket { write ioctl setopt read getopt create };
+allow netdiag self:packet_socket { write setopt read getopt create };
 
 allow netdiag fuse:dir create_dir_perms;
 allow netdiag fuse:file create_file_perms;
