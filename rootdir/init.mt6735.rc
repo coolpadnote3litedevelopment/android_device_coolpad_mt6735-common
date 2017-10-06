@@ -214,7 +214,7 @@ on post-fs-data
     chown system system /dev/ttyMT2
 
     chmod 0660 /dev/wmtWifi
-    chown system system /dev/wmtWifi
+    chown wifi wifi /dev/wmtWifi
 
     # VideoCodec
     chmod 0660 /dev/Vcodec
