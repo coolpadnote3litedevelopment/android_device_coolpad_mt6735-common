@@ -88,9 +88,8 @@ BOARD_CONNECTIVITY_MODULE := conn_soc
 # Camera
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 
-# CMHW
-BOARD_USES_CYANOGEN_HARDWARE := true
-BOARD_HARDWARE_CLASS += $(COMMON_PATH)/cmhw
+# LineageOS Hardware
+BOARD_HARDWARE_CLASS += $(COMMON_PATH)/lineagehw
 
 ifeq ($(HOST_OS),linux)
   ifeq ($(TARGET_BUILD_VARIANT),user)
