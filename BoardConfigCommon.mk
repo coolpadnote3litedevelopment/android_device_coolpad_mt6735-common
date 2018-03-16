@@ -131,6 +131,9 @@ BOARD_RIL_CLASS := ../../../device/coolpad/mt6735-common/ril
 # Shims
 TARGET_LDPRELOAD += libshim_xlog.so
 
+# HIDL
+DEVICE_MANIFEST_FILE := $(COMMON_PATH)/manifest.xml
+
 # Filesystem
 TARGET_ANDROID_FILESYSTEM_CONFIG_H := $(COMMON_PATH)/android_filesystem_config.h
 
