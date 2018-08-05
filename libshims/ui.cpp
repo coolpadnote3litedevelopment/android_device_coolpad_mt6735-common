@@ -1,5 +1,6 @@
 #include <new>
 
+#include <gui/BufferQueue.h>
 #include <ui/GraphicBuffer.h>
 #include <ui/GraphicBufferMapper.h>
 #include <ui/PixelFormat.h>
@@ -20,6 +21,14 @@ extern "C" {
 
     void *_ZN7android13GraphicBufferC1Ejjij(void *thiz, uint32_t inWidth, uint32_t inHeight, int32_t inFormat, uint32_t inUsage) {
         return new (thiz) android::GraphicBuffer(inWidth, inHeight, inFormat, inUsage);
+    }
+
+    void _ZN7android11BufferQueue17createBufferQueueEPNS_2spINS_22IGraphicBufferProducerEEEPNS1_INS_22IGraphicBufferConsumerEEERKNS1_INS_19IGraphicBufferAllocEEE(
+            android::sp<android::IGraphicBufferProducer>* outProducer,
+            android::sp<android::IGraphicBufferConsumer>* outConsumer,
+            void*) {
+        // createBufferQueue is a static method, call it directly
+        android::BufferQueue::createBufferQueue(outProducer, outConsumer);
     }
 
     android::status_t _ZN7android5Fence4waitEi(void *thiz, int);
