@@ -31,3 +31,6 @@ media.stagefright.less-secure=true
 
 # Media
 persist.media.treble_omx=false
+
+# Display
+debug.hwui.use_buffer_age=false
