@@ -154,10 +154,9 @@ TARGET_LD_SHIM_LIBS := \
     /system/lib64/libmtk_mmutils.so|libshim_ui.so \
     /system/lib/libMtkOmxVenc.so|libshim_ui.so \
     /system/lib/libmal_datamngr.so|libshim_ifc.so \
-    /system/lib64/libmal_datamngr.so|libshim_ifc.so
-
-# Shims
-TARGET_LDPRELOAD += libshim_xlog.so
+    /system/lib64/libmal_datamngr.so|libshim_ifc.so \
+    /system/lib/liblog.so|libshim_xlog.so \
+    /system/lib64/liblog.so|libshim_xlog.so
 
 # HIDL
 DEVICE_MANIFEST_FILE := $(COMMON_PATH)/manifest.xml
