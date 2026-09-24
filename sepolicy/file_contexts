@@ -49,6 +49,7 @@
 /dev/camera-isp                                                 u:object_r:camera_device:s0
 /dev/camera-fdvt                                                u:object_r:camera_device:s0
 /dev/kd_camera_hw                                               u:object_r:camera_device:s0
+/dev/kd_camera_hw_bus2                                          u:object_r:camera_device:s0
 /dev/kd_camera_flashlight                                       u:object_r:camera_device:s0
 /dev/MAINAF                                                     u:object_r:camera_device:s0
 /dev/MTK_SMI                                                    u:object_r:camera_device:s0
