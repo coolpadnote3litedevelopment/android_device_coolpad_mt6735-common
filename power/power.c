@@ -90,13 +90,18 @@ static void power_hint(struct power_module *module, power_hint_t hint,
     }
 }
 
+#ifndef TAP_TO_WAKE_ON
+#define TAP_TO_WAKE_ON "1"
+#endif
+#ifndef TAP_TO_WAKE_OFF
+#define TAP_TO_WAKE_OFF "0"
+#endif
+
 void set_feature(struct power_module *module, feature_t feature, int state)
 {
 #ifdef TAP_TO_WAKE_NODE
-    char tmp_str[64];
     if (feature == POWER_FEATURE_DOUBLE_TAP_TO_WAKE) {
-        snprintf(tmp_str, 64, "%d", state);
-        power_fwrite(TAP_TO_WAKE_NODE, tmp_str);
+        power_fwrite(TAP_TO_WAKE_NODE, state ? TAP_TO_WAKE_ON : TAP_TO_WAKE_OFF);
         return;
     }
 #endif
