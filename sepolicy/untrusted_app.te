@@ -1,0 +1,2 @@
+# MediaProvider stats the storage stub of removable volumes
+dontaudit untrusted_app storage_stub_file:dir getattr;
