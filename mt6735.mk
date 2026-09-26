@@ -88,7 +88,8 @@ PRODUCT_PACKAGES += \
 # Shims
 PRODUCT_PACKAGES += \
     libshim_audio \
-    libshim_ifc
+    libshim_ifc \
+    libshim_vt
 
 # Radio dependencies
 PRODUCT_PACKAGES += \
