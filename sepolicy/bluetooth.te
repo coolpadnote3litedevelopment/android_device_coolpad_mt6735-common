@@ -6,4 +6,4 @@ allow bluetooth nvdata_file:dir search;
 allow bluetooth nvdata_file:file rw_file_perms;
 
 # libnvram probes the raw nvram partition before reading BT_Addr from nvdata
-dontaudit bluetooth nvram_device:blk_file { read write };
+dontaudit bluetooth nvram_device:blk_file { open read write };
