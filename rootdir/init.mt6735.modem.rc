@@ -49,9 +49,6 @@ service terservice /system/bin/terservice
 on property:ril.muxreport=1
     start muxreport-daemon
 
-service_redefine ril-daemon /system/bin/mtkrild
-    disabled
-
 service ril-daemon-mtk /system/bin/mtkrild
     class core
     socket rild stream 660 root radio

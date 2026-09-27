@@ -120,6 +120,7 @@ TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 
 # RIL
+BOARD_PROVIDES_RILD := true
 BOARD_RIL_CLASS := ../../../device/coolpad/mt6735-common/ril
 
 # Releasetools
