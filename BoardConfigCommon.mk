@@ -18,9 +18,9 @@ ifneq ($(MTKPATH),)
 endif
 
 
-TARGET_CYANOGEN_COMMON := mt6735
+TARGET_COOLPAD_COMMON := mt6735
 
-COMMON_PATH := device/cyanogen/mt6735-common
+COMMON_PATH := device/coolpad/mt6735-common
 TARGET_SPECIFIC_HEADER_PATH := $(COMMON_PATH)/include
 
 TARGET_BOARD_PLATFORM ?= mt6735
@@ -121,7 +121,7 @@ TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 
 # RIL
-BOARD_RIL_CLASS := ../../../device/cyanogen/mt6735-common/ril
+BOARD_RIL_CLASS := ../../../device/coolpad/mt6735-common/ril
 
 # Releasetools
 #TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)
