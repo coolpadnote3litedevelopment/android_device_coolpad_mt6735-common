@@ -21,8 +21,10 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <log/log.h>
-#include <sys/uio.h>
+#include <string.h>
 #include <unistd.h>
+
+#include <vector>
 
 namespace android {
 namespace hardware {
@@ -30,11 +32,14 @@ namespace bluetooth {
 namespace hci {
 
 size_t H4Protocol::Send(uint8_t type, const uint8_t* data, size_t length) {
-  struct iovec iov[] = {{&type, sizeof(type)},
-                        {const_cast<uint8_t*>(data), length}};
+  // /dev/stpbt takes each write as a whole packet, so the type byte can't
+  // go in a write of its own.
+  std::vector<uint8_t> packet(length + 1);
+  packet[0] = type;
+  memcpy(packet.data() + 1, data, length);
   ssize_t ret = 0;
   do {
-    ret = TEMP_FAILURE_RETRY(writev(uart_fd_, iov, sizeof(iov) / sizeof(iov[0])));
+    ret = TEMP_FAILURE_RETRY(write(uart_fd_, packet.data(), packet.size()));
   } while (-1 == ret && EAGAIN == errno);
 
   if (ret == -1) {
