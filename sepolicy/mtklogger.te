@@ -19,4 +19,4 @@ allow mtklogger_app mobile_log_d:unix_stream_socket connectto;
 allow mtklogger_app mdlog_data_file:file rw_file_perms;
 allow mtklogger_app mdlog_data_file:dir rw_dir_perms;
 
-allow mtklogger_app { service_manager_type -gatekeeper_service -netd_service }:service_manager find;
+allow mtklogger_app { service_manager_type -dumpstate_service -gatekeeper_service -incident_service -installd_service -netd_service }:service_manager find;
