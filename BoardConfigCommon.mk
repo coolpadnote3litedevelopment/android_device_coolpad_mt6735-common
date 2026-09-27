@@ -139,8 +139,9 @@ TARGET_LD_SHIM_LIBS := \
     /system/lib/libsink.so|libshim_vt.so \
     /system/lib/libsource.so|libshim_vt.so \
     /system/lib/libcomutils.so|libshim_vt.so \
-    /system/lib/libicuuc.so|libshim_icu.so \
-    /system/lib64/libicuuc.so|libshim_icu.so \
+    /system/bin/mtk_agpsd|libshim_icu.so \
+    /system/lib/libdrmmtkutil.so|libshim_icu.so \
+    /system/lib64/libdrmmtkutil.so|libshim_icu.so \
     /system/lib/libMtkOmxVdecEx.so|libshim_bionic.so \
     /system/lib/libmtkjpeg.so|libshim_bionic.so \
     /system/lib/libvcodecdrv.so|libshim_bionic.so \
