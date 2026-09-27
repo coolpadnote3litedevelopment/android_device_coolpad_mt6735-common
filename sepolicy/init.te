@@ -12,6 +12,7 @@ allow init debugfs:dir mounton;
 allow init {
     agpsd
     audioserver
+    bootanim
     cameraserver
     mediacodec
     mediaserver
