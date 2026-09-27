@@ -11,7 +11,12 @@ LOCAL_CPP_EXTENSION := .cc
 
 LOCAL_SRC_FILES := \
     service.cc \
+    async_fd_watcher.cc \
     bluetooth_hci.cc \
+    h4_protocol.cc \
+    hci_packetizer.cc \
+    hci_protocol.cc \
+    mct_protocol.cc \
     vendor_interface.cc \
     radiomod.c
 
@@ -26,9 +31,5 @@ LOCAL_SHARED_LIBRARIES := \
     liblog \
     libutils \
     libnvram
-
-LOCAL_STATIC_LIBRARIES := \
-    android.hardware.bluetooth-async \
-    android.hardware.bluetooth-hci
 
 include $(BUILD_EXECUTABLE)
