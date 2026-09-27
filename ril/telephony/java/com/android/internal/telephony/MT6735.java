@@ -29,6 +29,7 @@ import android.os.SystemProperties;
 
 import android.provider.Settings;
 import android.provider.Settings.Global;
+import android.util.SparseIntArray;
 
 import android.telephony.TelephonyManager;
 
@@ -58,7 +59,12 @@ public class MT6735 extends RIL implements CommandsInterface {
 
     private static final int REFRESH_SESSION_RESET = 6;      /* Session reset */
 
+    /* ccmni0-3 carry regular PDNs, the IMS stack expects its PDN on ccmni4 */
+    private static final int IMS_INTERFACE_INDEX = 4;
+    private static final int CID_RESERVED = -2;
+
     private int[] dataCallCids = { -1, -1, -1, -1, -1 };
+    private final SparseIntArray mPendingInterfaces = new SparseIntArray();
 
     private Context mContext;
     private TelephonyManager mTelephonyManager;
@@ -277,6 +283,7 @@ public class MT6735 extends RIL implements CommandsInterface {
         int interfaceId=0;
         RILRequest rr
                 = RILRequest.obtain(RIL_REQUEST_SETUP_DATA_CALL, result);
+        int index = -1;
 
         rr.mParcel.writeInt(8); //bumped by one
 
@@ -288,11 +295,23 @@ public class MT6735 extends RIL implements CommandsInterface {
         rr.mParcel.writeString(authType);
         rr.mParcel.writeString(protocol);
 
-        /* Find the first available interfaceId */
-        for (int i=0; i < 4; i++) {
-            if (dataCallCids[i] < 0) {
-                interfaceId = i+1;
-                break;
+        synchronized (dataCallCids) {
+            if (Integer.toString(DATA_PROFILE_IMS).equals(profile)) {
+                if (dataCallCids[IMS_INTERFACE_INDEX] == -1)
+                    index = IMS_INTERFACE_INDEX;
+            } else {
+                /* Find the first available interfaceId */
+                for (int i=0; i < 4; i++) {
+                    if (dataCallCids[i] == -1) {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+            if (index >= 0) {
+                dataCallCids[index] = CID_RESERVED;
+                mPendingInterfaces.put(rr.mSerial, index);
+                interfaceId = index + 1;
             }
         }
         rr.mParcel.writeString(interfaceId+"");
@@ -308,10 +327,12 @@ public class MT6735 extends RIL implements CommandsInterface {
     @Override
     public void
     deactivateDataCall(int cid, int reason, Message result) {
-        for (int i=0; i < 4; i++) {
-            if (dataCallCids[i] == cid) {
-                dataCallCids[i] = -1;
-                break;
+        synchronized (dataCallCids) {
+            for (int i=0; i < dataCallCids.length; i++) {
+                if (dataCallCids[i] == cid) {
+                    dataCallCids[i] = -1;
+                    break;
+                }
             }
         }
         super.deactivateDataCall(cid, reason, result);
@@ -404,6 +425,9 @@ public class MT6735 extends RIL implements CommandsInterface {
         synchronized (mRequestList) {
             RILRequest tr = mRequestList.get(serial);
             if (tr != null && tr.mSerial == serial) {
+                if (tr.mRequest == RIL_REQUEST_SETUP_DATA_CALL && error != 0 && p.dataAvail() == 0) {
+                    releaseInterface(serial, -1);
+                }
                 if (error == 0 || p.dataAvail() > 0) {
                     try {switch (tr.mRequest) {
                         /* Get those we're interested in */
@@ -450,7 +474,7 @@ public class MT6735 extends RIL implements CommandsInterface {
                 case RIL_REQUEST_EMERGENCY_DIAL: ret =  responseVoid(p); break;
                 case RIL_REQUEST_SET_ECC_SERVICE_CATEGORY: ret =  responseVoid(p); break;
                 case RIL_REQUEST_DATA_REGISTRATION_STATE: ret =  fixupPSBearerDataRegistration(p); break;
-                case RIL_REQUEST_SETUP_DATA_CALL: ret =  fetchCidFromDataCall(p); break;
+                case RIL_REQUEST_SETUP_DATA_CALL: ret =  fetchCidFromDataCall(p, serial); break;
                 case RIL_REQUEST_ALLOW_DATA: ret =  responseVoid(p); mVoiceNetworkStateRegistrants.notifyRegistrants(new AsyncResult(null, null, null)); break;
                 default:
                     throw new RuntimeException("Shouldn't be here: " + rr.mRequest);
@@ -487,18 +511,21 @@ public class MT6735 extends RIL implements CommandsInterface {
     }
 
     private Object
-    fetchCidFromDataCall(Parcel p) {
+    fetchCidFromDataCall(Parcel p, int serial) {
         DataCallResponse ret = (DataCallResponse)super.responseSetupDataCall(p);
 
-        if (ret.cid >= 0) {
-            for (int i = 0; i < 4; i++) {
-                if (dataCallCids[i] < 0) {
-                    dataCallCids[i] = ret.cid;
-                    break;
-                }
-            }
-        }
+        releaseInterface(serial, ret.status == 0 ? ret.cid : -1);
         return ret;
+    }
+
+    private void
+    releaseInterface(int serial, int cid) {
+        synchronized (dataCallCids) {
+            int index = mPendingInterfaces.get(serial, -1);
+            mPendingInterfaces.delete(serial);
+            if (index >= 0)
+                dataCallCids[index] = cid >= 0 ? cid : -1;
+        }
     }
 
 }
