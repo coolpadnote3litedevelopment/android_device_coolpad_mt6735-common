@@ -50,6 +50,7 @@ on post-fs-data
     restorecon /data/nvram
     exec - root system -- /system/bin/chown -R root:system /nvdata
     mkdir /nvdata/media 0771 media audio
+    exec - root system -- /system/bin/chown -R media:audio /nvdata/media
 
     # Set SELinux security contexts on upgrade or policy update.
     restorecon_recursive /nvdata
