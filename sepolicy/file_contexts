@@ -21,6 +21,7 @@
 /system/bin/wmt_loader                                          u:object_r:wmt_loader_exec:s0
 /system/bin/mobile_log_d                                        u:object_r:mobile_log_d_exec:s0
 /system/bin/netdiag                                             u:object_r:netdiag_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.bluetooth@1\.0-service\.mtk u:object_r:hal_bluetooth_default_exec:s0
 
 # Meta mode
 /sbin/multi_init                                                u:object_r:init_exec:s0
