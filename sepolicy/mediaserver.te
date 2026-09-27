@@ -18,3 +18,10 @@ allow mediaserver pq_service:service_manager find;
 
 # Audio
 allow mediaserver audiohal_prop:property_service set;
+
+# Camera HAL1 runs in mediaserver
+allow mediaserver camera_device:chr_file rw_file_perms;
+get_prop(mediaserver, nvram_prop)
+allow mediaserver proc:file r_file_perms;
+allow mediaserver proc_meminfo:file r_file_perms;
+allow mediaserver sysfs:file r_file_perms;
