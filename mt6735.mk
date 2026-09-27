@@ -142,7 +142,9 @@ PRODUCT_PACKAGES += \
 
 # Radio dependencies
 PRODUCT_PACKAGES += \
+    libmtkrilbridge \
     muxreport \
+    rild \
     terservice
 
 # Vibrator
