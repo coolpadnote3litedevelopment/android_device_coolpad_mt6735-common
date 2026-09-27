@@ -28,3 +28,4 @@ allow nvram_daemon shell_exec:file getattr;
 allow nvram_daemon sysfs:file r_file_perms;
 allow nvram_daemon toolbox_exec:file rx_file_perms;
 dontaudit nvram_daemon device:dir write;
+allow nvram_daemon nvdata_file:lnk_file { getattr read setattr };

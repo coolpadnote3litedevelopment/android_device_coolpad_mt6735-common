@@ -25,3 +25,4 @@ get_prop(mediaserver, nvram_prop)
 allow mediaserver proc:file r_file_perms;
 allow mediaserver proc_meminfo:file r_file_perms;
 allow mediaserver sysfs:file r_file_perms;
+allow mediaserver nvdata_file:lnk_file read;

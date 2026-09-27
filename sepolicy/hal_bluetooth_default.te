@@ -2,7 +2,7 @@
 allow hal_bluetooth_default stpbt_device:chr_file rw_file_perms;
 
 # Allow nvram access through the /data/nvram link
-allow hal_bluetooth_default system_data_file:lnk_file read;
+allow hal_bluetooth_default nvdata_file:lnk_file read;
 allow hal_bluetooth_default nvdata_file:dir search;
 allow hal_bluetooth_default nvdata_file:file rw_file_perms;
 

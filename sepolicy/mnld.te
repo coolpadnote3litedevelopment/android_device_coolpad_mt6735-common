@@ -44,3 +44,4 @@ get_prop(mnld, wmt_prop)
 get_prop(mnld, nvram_prop)
 
 allow mnld proc:file r_file_perms;
+allow mnld nvdata_file:lnk_file read;
