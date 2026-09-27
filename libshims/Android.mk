@@ -21,6 +21,13 @@ LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
+LOCAL_SRC_FILES := sensor.cpp
+LOCAL_SHARED_LIBRARIES := libdl libsensor libutils
+LOCAL_MODULE := libshim_sensor
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
 LOCAL_SRC_FILES := sockets.c
 LOCAL_MODULE := libshim_sockets
 LOCAL_MODULE_TAGS := optional
