@@ -125,6 +125,9 @@ BOARD_RIL_CLASS := ../../../device/coolpad/mt6735-common/ril
 # Releasetools
 #TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)
 
+# Shims
+TARGET_LDPRELOAD += libshim_xlog.so
+
 # Filesystem
 TARGET_ANDROID_FILESYSTEM_CONFIG_H := $(COMMON_PATH)/android_filesystem_config.h
 
