@@ -17,3 +17,5 @@ allow system_server wmtWifi_device:chr_file w_file_perms;
 allow system_server mtklogger_data_file:dir { search getattr };
 
 dontaudit system_server self:capability sys_resource;
+
+allow system_server wifi_data_file:sock_file unlink;
