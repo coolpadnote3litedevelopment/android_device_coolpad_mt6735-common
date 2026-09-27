@@ -324,6 +324,13 @@ public class MT6735 extends RIL implements CommandsInterface {
         send(rr);
     }
 
+    /* The modem routes SMS over IMS on its own and has no IMS_SEND_SMS */
+    @Override
+    public void
+    sendImsGsmSms(String smscPDU, String pdu, int retry, int messageRef, Message response) {
+        sendSMS(smscPDU, pdu, response);
+    }
+
     @Override
     public void
     deactivateDataCall(int cid, int reason, Message result) {
