@@ -79,14 +79,19 @@ std::string simOperator(const Slot &slot) {
     return static_cast<size_t>(slot.id) < v.size() ? v[slot.id] : "";
 }
 
+/* libril hands empty strings over as NULL, which mtkrild's attach APN cache dereferences */
+const char *orEmpty(const char *s) {
+    return s ? s : "";
+}
+
 void sendAttachApn(Slot &slot, Out out, RIL_Token t, const RIL_InitialAttachApn *iaa) {
     std::string op = simOperator(slot);
     Parcel p;
-    writeString(p, iaa ? iaa->apn : "");
-    writeString(p, iaa ? iaa->protocol : "");
+    writeString(p, iaa ? orEmpty(iaa->apn) : "");
+    writeString(p, iaa ? orEmpty(iaa->protocol) : "");
     p.writeInt32(iaa ? iaa->authtype : 0);
-    writeString(p, iaa ? iaa->username : "");
-    writeString(p, iaa ? iaa->password : "");
+    writeString(p, iaa ? orEmpty(iaa->username) : "");
+    writeString(p, iaa ? orEmpty(iaa->password) : "");
     writeString(p, op.c_str());
     p.writeInt32(1);
     p.writeInt32(-1);
