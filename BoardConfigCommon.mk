@@ -126,6 +126,8 @@ BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 
 # Shims
 TARGET_LD_SHIM_LIBS := \
+    /system/bin/mtkrild|libshim_sockets.so \
+    /system/bin/mtkmal|libshim_sockets.so \
     /system/lib/mtk-ril.so|libshim_ifc.so \
     /system/lib64/mtk-ril.so|libshim_ifc.so \
     /system/lib/hw/audio.vendor.mt6735.so|libshim_audio.so \

@@ -21,6 +21,12 @@ LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
+LOCAL_SRC_FILES := sockets.c
+LOCAL_MODULE := libshim_sockets
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
 LOCAL_SRC_FILES := audio_nvram.c audio_voice_unlock.c
 LOCAL_MODULE := libshim_audio
 LOCAL_MODULE_TAGS := optional
