@@ -49,6 +49,10 @@ service terservice /system/bin/terservice
 on property:ril.muxreport=1
     start muxreport-daemon
 
+# gsm0710muxd stops ril-daemon by name before it starts mtkrild
+on property:init.svc.ril-daemon-mtk=running
+    start ril-daemon
+
 service ril-daemon-mtk /system/bin/mtkrild -l mtk-ril.so -- -d /dev/ttyC0
     class core
     socket rild stream 660 root radio
