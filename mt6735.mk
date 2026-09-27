@@ -51,6 +51,7 @@ PRODUCT_PACKAGES += \
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \
+    audio.primary.mt6735 \
     audio.r_submix.default \
     libaudiopolicymanagerdefault \
     libtinyalsa \
