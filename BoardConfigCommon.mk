@@ -149,6 +149,10 @@ TARGET_LD_SHIM_LIBS := \
     /system/lib/libmtk_mmutils.so|libshim_ui.so \
     /system/lib64/libmtk_mmutils.so|libshim_ui.so \
     /system/lib/libMtkOmxVenc.so|libshim_ui.so \
+    /system/lib/libgui_ext.so|libshim_ui.so \
+    /system/lib64/libgui_ext.so|libshim_ui.so \
+    /system/lib/libmmsdkservice.feature.so|libshim_ui.so \
+    /system/lib64/libmmsdkservice.feature.so|libshim_ui.so \
     /system/lib/libmal_datamngr.so|libshim_ifc.so \
     /system/lib64/libmal_datamngr.so|libshim_ifc.so \
     /system/lib/liblog.so|libshim_xlog.so \
