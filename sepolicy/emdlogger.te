@@ -26,3 +26,4 @@ allow emdlogger init:unix_stream_socket connectto;
 allow emdlogger proc:file r_file_perms;
 allow emdlogger sysfs:file r_file_perms;
 dontaudit emdlogger rootfs:file r_file_perms;
+allow emdlogger file_contexts_file:file r_file_perms;
