@@ -55,3 +55,19 @@ int ifc_ccmni_md_cfg(const char *ifname, int md_id)
 {
     return ccmni_ioctl(ifname, SIOCCCMNICFG, md_id);
 }
+
+int dhcp_start(const char *ifname)
+{
+    (void)ifname;
+    return -1;
+}
+
+int dhcp_get_results(const char *ifname, char *ipaddr, char *gateway,
+        unsigned int *prefix_length, char *dns[], char *server,
+        unsigned int *lease, char *vendor_info, char *domain, char *mtu)
+{
+    (void)ifname; (void)ipaddr; (void)gateway; (void)prefix_length;
+    (void)dns; (void)server; (void)lease; (void)vendor_info; (void)domain;
+    (void)mtu;
+    return -1;
+}
