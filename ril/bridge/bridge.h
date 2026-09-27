@@ -113,6 +113,8 @@ struct Slot {
     std::mutex writeLock;
     std::mutex pendingLock;
     std::map<int32_t, Pending> pending;
+    /* identity requests that hit a powered-down modem, resent once the radio is on */
+    std::vector<Pending> deferred;
     /* cid per ccmni interface, -1 when free, CID_RESERVED while a setup is in flight */
     int dataCids[5] = {-1, -1, -1, -1, -1};
 };

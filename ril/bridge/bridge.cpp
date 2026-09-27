@@ -186,19 +186,45 @@ bool readAll(int fd, void *data, size_t len) {
 
 void failPending(Slot &slot) {
     std::map<int32_t, Pending> pending;
+    std::vector<Pending> deferred;
     {
         std::lock_guard<std::mutex> lock(slot.pendingLock);
         pending.swap(slot.pending);
+        deferred.swap(slot.deferred);
         for (int &cid : slot.dataCids) cid = -1;
     }
     for (auto &it : pending) {
         if (it.second.token) complete(it.second.token, RIL_E_RADIO_NOT_AVAILABLE, nullptr, 0);
+    }
+    for (const Pending &req : deferred) complete(req.token, RIL_E_RADIO_NOT_AVAILABLE, nullptr, 0);
+}
+
+/*
+ * The framework asks for the IMEI once, while it still has both radios off, and mtkrild
+ * powers the modem down entirely when that happens.
+ */
+bool isIdentity(int request) {
+    return request == RIL_REQUEST_DEVICE_IDENTITY || request == RIL_REQUEST_GET_IMEI ||
+           request == RIL_REQUEST_GET_IMEISV;
+}
+
+void resendDeferred(Slot &slot) {
+    std::vector<Pending> deferred;
+    {
+        std::lock_guard<std::mutex> lock(slot.pendingLock);
+        deferred.swap(slot.deferred);
+    }
+    for (const Pending &req : deferred) {
+        if (!send(slot, req.request, req.out, req.token, -1, Parcel())) {
+            complete(req.token, RIL_E_RADIO_NOT_AVAILABLE, nullptr, 0);
+        }
     }
 }
 
 void setState(Slot &slot, RIL_RadioState state) {
     slot.state = state;
     unsolicited(slot, RIL_UNSOL_RESPONSE_RADIO_STATE_CHANGED, nullptr, 0);
+    if (state == RADIO_STATE_ON) resendDeferred(slot);
 }
 
 void handleSolicited(Slot &slot, Parcel &p) {
@@ -214,6 +240,10 @@ void handleSolicited(Slot &slot, Parcel &p) {
         }
         req = it->second;
         slot.pending.erase(it);
+        if (err == RIL_E_RADIO_NOT_AVAILABLE && req.token && isIdentity(req.request)) {
+            slot.deferred.push_back(req);
+            return;
+        }
     }
     readResponse(slot, req, static_cast<RIL_Errno>(err), p);
 }
