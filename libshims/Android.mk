@@ -25,3 +25,10 @@ LOCAL_SRC_FILES := audio_nvram.c audio_voice_unlock.c
 LOCAL_MODULE := libshim_audio
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := vt_media.c
+LOCAL_MODULE := libshim_vt
+LOCAL_MODULE_TAGS := optional
+LOCAL_32_BIT_ONLY := true
+include $(BUILD_SHARED_LIBRARY)
