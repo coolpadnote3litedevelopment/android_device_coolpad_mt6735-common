@@ -1,3 +1,6 @@
+#include <new>
+
+#include <ui/GraphicBuffer.h>
 #include <ui/GraphicBufferMapper.h>
 #include <ui/PixelFormat.h>
 #include <ui/Rect.h>
@@ -15,13 +18,8 @@ extern "C" {
         return _ZN7android19GraphicBufferMapper4lockEPK13native_handlejRKNS_4RectEPPv(thiz, handle, static_cast<uint32_t>(usage), bounds, vaddr);
     }
 
-    void *_ZN7android13GraphicBufferC1EjjijNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE(
-            void *thiz, uint32_t inWidth, uint32_t inHeight, android::PixelFormat inFormat,
-            uint32_t inUsage, std::string requestorName);
-
     void *_ZN7android13GraphicBufferC1Ejjij(void *thiz, uint32_t inWidth, uint32_t inHeight, int32_t inFormat, uint32_t inUsage) {
-        return _ZN7android13GraphicBufferC1EjjijNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE(
-            thiz, inWidth, inHeight, inFormat, inUsage, "<Unknown>");
+        return new (thiz) android::GraphicBuffer(inWidth, inHeight, inFormat, inUsage);
     }
 
     android::status_t _ZN7android5Fence4waitEi(void *thiz, int);
