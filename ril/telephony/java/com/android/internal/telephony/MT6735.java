@@ -66,7 +66,6 @@ public class MT6735 extends RIL implements CommandsInterface {
     private int[] dataCallCids = { -1, -1, -1, -1, -1 };
     private final SparseIntArray mPendingInterfaces = new SparseIntArray();
 
-    private Context mContext;
     private TelephonyManager mTelephonyManager;
     private MtkEccList mEccList;
 
@@ -77,7 +76,6 @@ public class MT6735 extends RIL implements CommandsInterface {
     public MT6735(Context context, int preferredNetworkType,
             int cdmaSubscription, Integer instanceId) {
         super(context, preferredNetworkType, cdmaSubscription, instanceId);
-        mContext = context;
         mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         mEccList = new MtkEccList();
     }
