@@ -1,0 +1,5 @@
+# chown -R root:system /nvdata at boot
+allow toolbox self:capability { chown dac_override dac_read_search };
+allow toolbox nvdata_file:dir { r_dir_perms setattr };
+allow toolbox nvdata_file:file { getattr setattr };
+allow toolbox nvdata_file:lnk_file { getattr setattr };
