@@ -6,4 +6,6 @@ sendto: 1
 recvfrom: 1
 sysinfo: 1
 getcwd: 1
-
+sched_getparam: 1
+sched_getscheduler: 1
+sched_setparam: 1
