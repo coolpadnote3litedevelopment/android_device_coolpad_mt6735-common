@@ -19,3 +19,12 @@ allow nvram_daemon nvram_prop:property_service set;
 allow nvram_daemon wmt_prop:property_service set;
 
 unix_socket_connect(nvram_daemon, property, init)
+
+set_prop(nvram_daemon, nvram_prop)
+allow nvram_daemon kmsg_device:chr_file w_file_perms;
+allow nvram_daemon rootfs:dir r_dir_perms;
+allow nvram_daemon rootfs:file r_file_perms;
+allow nvram_daemon shell_exec:file getattr;
+allow nvram_daemon sysfs:file r_file_perms;
+allow nvram_daemon toolbox_exec:file rx_file_perms;
+dontaudit nvram_daemon device:dir write;

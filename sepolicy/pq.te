@@ -13,3 +13,5 @@ unix_socket_connect(pq, property, init)
 allow pq pq_conf_prop:property_service set;
 
 get_prop(pq, pq_conf_prop)
+
+allow pq proc:file r_file_perms;

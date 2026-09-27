@@ -22,3 +22,7 @@ allow emdlogger mdlog_device:chr_file { read write open ioctl};
 allow emdlogger property_socket:sock_file write;
 allow emdlogger debug_prop:property_service set;
 allow emdlogger init:unix_stream_socket connectto;
+
+allow emdlogger proc:file r_file_perms;
+allow emdlogger sysfs:file r_file_perms;
+dontaudit emdlogger rootfs:file r_file_perms;

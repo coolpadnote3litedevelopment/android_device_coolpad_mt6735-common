@@ -9,3 +9,5 @@ allow md_ctrl muxreport_exec:file rx_file_perms;
 allow md_ctrl self:capability dac_override;
 
 set_prop(md_ctrl,vold_encryption_type_prop);
+
+allow md_ctrl sysfs:file r_file_perms;

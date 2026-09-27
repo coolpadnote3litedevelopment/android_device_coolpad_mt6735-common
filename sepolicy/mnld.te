@@ -44,3 +44,5 @@ file_type_auto_trans(mnld,apk_data_file,mnld_data_file);
 
 get_prop(mnld, wmt_prop)
 get_prop(mnld, nvram_prop)
+
+allow mnld proc:file r_file_perms;

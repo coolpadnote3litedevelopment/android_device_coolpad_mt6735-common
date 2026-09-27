@@ -22,3 +22,6 @@ allow init {
     surfaceflinger
     zygote
 }:process noatsecure;
+
+allow init debugfs:file w_file_perms;
+allow init tmpfs:lnk_file create_file_perms;
