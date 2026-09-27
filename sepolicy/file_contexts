@@ -72,6 +72,8 @@
 /dev/socket/rild[2-4]                                           u:object_r:rild_socket:s0
 /dev/socket/rild-atci                                           u:object_r:rild_socket:s0
 /dev/socket/rild-ims                                            u:object_r:rild_socket:s0
+/dev/socket/rild-mal                                            u:object_r:rild_socket:s0
+/dev/socket/rild-mal-at                                         u:object_r:rild_socket:s0
 /dev/socket/rild-mtk-modem                                      u:object_r:rild_socket:s0
 /dev/socket/rild-mtk-ut                                         u:object_r:rild_socket:s0
 /dev/socket/rild-mtk-ut-2                                       u:object_r:rild_socket:s0
