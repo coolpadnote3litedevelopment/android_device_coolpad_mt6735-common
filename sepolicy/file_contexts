@@ -80,6 +80,7 @@
 /dev/socket/rild-mtk-ut                                         u:object_r:rild_socket:s0
 /dev/socket/rild-mtk-ut-2                                       u:object_r:rild_socket:s0
 /dev/socket/rild-oem                                            u:object_r:rild_socket:s0
+/dev/socket/sap_uim_socket[0-9]+                                u:object_r:rild_socket:s0
 /dev/socket/agpsd                                               u:object_r:agpsd_socket:s0
 /dev/socket/agpsd[2-3]                                          u:object_r:agpsd_socket:s0
 /dev/socket/mnld                                                u:object_r:mnld_socket:s0
