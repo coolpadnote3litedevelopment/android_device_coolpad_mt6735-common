@@ -132,6 +132,7 @@ TARGET_LD_SHIM_LIBS := \
     /system/lib64/hw/audio.primary.mt6735.so|libshim_audio.so \
     /system/lib/libvtmal.so|libshim_vt.so \
     /system/lib/libsink.so|libshim_vt.so \
+    /system/lib/libsource.so|libshim_vt.so \
     /system/lib/libcomutils.so|libshim_vt.so \
     /system/lib/libicuuc.so|libshim_icu.so \
     /system/lib64/libicuuc.so|libshim_icu.so \
