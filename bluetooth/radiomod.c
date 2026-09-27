@@ -741,17 +741,30 @@ static VOID GORMevt_HCE_Common_Complete(VOID *p_evt)
 
 static BOOL WriteBDAddrToNvram(UCHAR *pucBDAddr)
 {
-    INT32 bt_fd = 0;
+    F_ID bt_nvram_fd;
+    int rec_size = 0;
+    int rec_num = 0;
 
-    bt_fd = open("/protect_s/properties/BT_Addr", O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0666);
-
-    /* Update BD address */
-    if (write(bt_fd, pucBDAddr, 6) < 0) {
-        LOG_ERR("Write BT NVRAM fails errno %d\n", errno);
-        close(bt_fd);
+    bt_nvram_fd = NVM_GetFileDesc(AP_CFG_RDEB_FILE_BT_ADDR_LID, &rec_size, &rec_num, ISWRITE);
+    if (bt_nvram_fd.iFileDesc < 0) {
+        LOG_WAN("Open BT NVRAM fails errno %d\n", errno);
         return FALSE;
     }
 
-    close(bt_fd);
+    if (rec_num != 1 || rec_size != sizeof(ap_nvram_btradio_struct)) {
+        LOG_ERR("Unexpected record num %d size %d\n", rec_num, rec_size);
+        NVM_CloseFileDesc(bt_nvram_fd);
+        return FALSE;
+    }
+
+    /* The BD address is the first field of the record */
+    lseek(bt_nvram_fd.iFileDesc, 0, SEEK_SET);
+    if (write(bt_nvram_fd.iFileDesc, pucBDAddr, 6) < 0) {
+        LOG_ERR("Write BT NVRAM fails errno %d\n", errno);
+        NVM_CloseFileDesc(bt_nvram_fd);
+        return FALSE;
+    }
+
+    NVM_CloseFileDesc(bt_nvram_fd);
     return TRUE;
 }
