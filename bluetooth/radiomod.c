@@ -77,6 +77,7 @@ static BOOL GORMcmd_HCC_Set_Sleep_Timeout(HC_BT_HDR *);
 static BOOL GORMcmd_HCC_Coex_Performance_Adjust(HC_BT_HDR *);
 static BOOL GORMcmd_HCC_Set_FW_SysLog(HC_BT_HDR *);
 static BOOL GORMcmd_HCC_Set_SSP_Debug_Mode(HC_BT_HDR *);
+static BOOL GORMcmd_HCC_Reset(HC_BT_HDR *);
 
 static VOID GORMevt_HCE_Common_Complete(VOID *);
 static BOOL WriteBDAddrToNvram(UCHAR *);
@@ -97,9 +98,61 @@ HCI_SEQ_T bt_init_preload_script_6630[] =
     {  0  },
 };
 
+// MT6735/MT6735M/MT6753 connectivity subsystem
+HCI_SEQ_T bt_init_preload_script_consys[] =
+{
+    {  GORMcmd_HCC_Get_Local_BD_Addr       }, /*0x1009*/
+    {  GORMcmd_HCC_Set_Local_BD_Addr       }, /*0xFC1A*/
+    {  GORMcmd_HCC_Set_Radio               }, /*0xFC79*/
+    {  GORMcmd_HCC_Set_TX_Power_Offset     }, /*0xFC93*/
+    {  GORMcmd_HCC_Set_Sleep_Timeout       }, /*0xFC7A*/
+    {  GORMcmd_HCC_Reset                   }, /*0x0C03*/
+    {  GORMcmd_HCC_Set_FW_SysLog           }, /*0xFCBE*/
+    {  0  },
+};
+
 /**************************************************************************
  *                          F U N C T I O N S                             *
 ***************************************************************************/
+
+static bool is_consys(UINT32 chip_id)
+{
+    return chip_id == 0x0321 || chip_id == 0x0335 || chip_id == 0x0337;
+}
+
+static ap_nvram_btradio_struct *bt_default_nvram(UINT32 chip_id)
+{
+    switch (chip_id) {
+    case 0x0321:
+        return &stBtDefault_6735;
+    case 0x0335:
+        return &stBtDefault_6735m;
+    case 0x0337:
+        return &stBtDefault_6753;
+    default:
+        return &stBtDefault_6630;
+    }
+}
+
+static UINT32 bt_get_combo_id(void)
+{
+    char chip_id_val[PROPERTY_VALUE_MAX];
+    int retry = 0;
+    UINT32 chip_id = 0;
+
+    do {
+        if (property_get("persist.mtk.wcn.combo.chipid", chip_id_val, NULL) &&
+            0 != strcmp(chip_id_val, "-1")) {
+            chip_id = strtoul(chip_id_val, NULL, 16);
+            break;
+        }
+        retry ++;
+        usleep(500000);
+    } while (retry < 10);
+
+    LOG_DBG("Combo chip id %x, retry %d\n", chip_id, retry);
+    return chip_id;
+}
 
 static bool is_memzero(unsigned char *buf, int size)
 {
@@ -194,8 +247,9 @@ VOID *GORM_FW_Init_Thread(VOID *ptr)
     pthread_mutexattr_settype(&btinit_ctrl.attr, PTHREAD_MUTEX_ERRORCHECK);
     pthread_mutex_init(&btinit_ctrl.mutex, &btinit_ctrl.attr);
     pthread_cond_init(&btinit_ctrl.cond, NULL);
-    btinit->cur_script = bt_init_preload_script_6630;
-    memcpy(ucDefaultAddr, stBtDefault_6630.addr, 6);
+    btinit->cur_script = is_consys(btinit->chip_id) ?
+        bt_init_preload_script_consys : bt_init_preload_script_6630;
+    memcpy(ucDefaultAddr, bt_default_nvram(btinit->chip_id)->addr, 6);
 
     /* Can not find matching script, simply skip */
     if ((btinit->cur_script) == NULL) {
@@ -276,14 +330,14 @@ exit:
     return NULL;
 }
 
-bool BT_InitDevice(PUCHAR pucNvRamData) 
+bool BT_InitDevice(UINT32 chip_id, PUCHAR pucNvRamData)
 {
     LOG_DBG("BT_InitDevice\n");
 
     memset(btinit, 0, sizeof(BT_INIT_VAR_T));
     btinit_ctrl.worker_thread_running = FALSE;
 
-    btinit->chip_id = 0x6630;
+    btinit->chip_id = chip_id;
     /* Copy configuration data */
     memcpy(btinit->bt_nvram.raw, pucNvRamData, sizeof(ap_nvram_btradio_struct));
 
@@ -301,17 +355,17 @@ bool BT_InitDevice(PUCHAR pucNvRamData)
 int mtk_fw_cfg(void)
 {
     unsigned char ucNvRamData[sizeof(ap_nvram_btradio_struct)] = {0};
+    UINT32 chip_id = bt_get_combo_id();
 
     /* Read NVRAM data */
     if ((bt_read_nvram(ucNvRamData) < 0) ||
           is_memzero(ucNvRamData, sizeof(ap_nvram_btradio_struct))) {
         LOG_WAN("Read NVRAM data fails or NVRAM data all zero!!\n");
-        LOG_WAN("Use mt6630 default value\n");
-        /* Use MT6630 default value */
-        memcpy(ucNvRamData, &stBtDefault_6630, sizeof(ap_nvram_btradio_struct));
+        LOG_WAN("Use the default value for chip %x\n", chip_id);
+        memcpy(ucNvRamData, bt_default_nvram(chip_id), sizeof(ap_nvram_btradio_struct));
     }
 
-    return (BT_InitDevice(ucNvRamData) == true ? 0 : -1);
+    return (BT_InitDevice(chip_id, ucNvRamData) == true ? 0 : -1);
 }
 
 void BT_Cleanup(void)
@@ -629,6 +683,21 @@ static BOOL GORMcmd_HCC_Set_SSP_Debug_Mode(HC_BT_HDR *p_cmd)
         *p++ = 0x00;
         LOG_DBG("GORMcmd_HCC_Set_SSP_Debug_Mode disable\n");
     }
+    ret = transmit_old(wOpCode, p_cmd, GORMevt_HCE_Common_Complete);
+    return ret;
+}
+
+static BOOL GORMcmd_HCC_Reset(HC_BT_HDR *p_cmd)
+{
+    uint8_t *p, ret;
+    wOpCode = 0x0C03;
+
+    p_cmd->len = 3;
+    p = (uint8_t *)(p_cmd + 1);
+    UINT16_TO_STREAM(p, wOpCode);
+    *p++ = 0;
+
+    LOG_DBG("GORMcmd_HCC_Reset\n");
     ret = transmit_old(wOpCode, p_cmd, GORMevt_HCE_Common_Complete);
     return ret;
 }
