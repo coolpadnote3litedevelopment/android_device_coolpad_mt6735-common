@@ -79,7 +79,7 @@ std::string simOperator(const Slot &slot) {
     return static_cast<size_t>(slot.id) < v.size() ? v[slot.id] : "";
 }
 
-/* libril hands empty strings over as NULL, which mtkrild's attach APN cache dereferences */
+/* libril hands empty strings over as NULL, which mtkrild's attach APN code dereferences */
 const char *orEmpty(const char *s) {
     return s ? s : "";
 }
@@ -210,7 +210,8 @@ bool mtkRequest(Slot &slot, int request, const void *data, size_t len, RIL_Token
             std::string interfaceId = std::to_string(index + 1);
             Parcel p;
             p.writeInt32(8);
-            for (int i = 0; i < 7; i++) writeString(p, s[i]);
+            /* mtkrild compares these against its attach APN cache without null checks */
+            for (int i = 0; i < 7; i++) writeString(p, orEmpty(s[i]));
             writeString(p, index >= 0 ? interfaceId.c_str() : "0");
             if (!send(slot, request, Out::SETUP_DATA, t, index, p)) {
                 releaseInterface(slot, index, -1);
