@@ -1,6 +1,5 @@
 # Services
 /system/bin/6620_launcher                                       u:object_r:conn_launcher_exec:s0
-/system/bin/af7133d                                             u:object_r:af7133d_exec:s0
 /system/bin/ccci_fsd                                            u:object_r:ccci_fsd_exec:s0
 /system/bin/ccci_mdinit                                         u:object_r:ccci_mdinit_exec:s0
 /system/bin/md_ctrl                                             u:object_r:md_ctrl_exec:s0
