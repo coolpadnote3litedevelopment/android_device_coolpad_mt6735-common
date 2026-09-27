@@ -6,3 +6,5 @@ allow netd wifi_data_file:dir create_dir_perms;
 
 type_transition netd wifi_data_file:dir wpa_socket "sockets";
 allow netd wpa_socket:dir create_dir_perms;
+
+dontaudit netd self:capability sys_module;
