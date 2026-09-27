@@ -5,3 +5,6 @@ allow init devpts:chr_file ioctl;
 allow init nvdata_device:blk_file write;
 allow init protect1_device:blk_file write;
 allow init protect2_device:blk_file write;
+
+# Keep AT_SECURE off so the linker honours LD_SHIM_LIBS for the shimmed blobs
+allow init { mediaserver ril-daemon-mtk }:process noatsecure;
