@@ -104,6 +104,12 @@ void readCardStatus(Parcel &p, Arena &a, RIL_CardStatus_v6 &cs) {
         app.pin1 = static_cast<RIL_PinState>(p.readInt32());
         app.pin2 = static_cast<RIL_PinState>(p.readInt32());
     }
+    /* libril drops the whole status if any index points past the apps */
+    int *index[] = {&cs.gsm_umts_subscription_app_index, &cs.cdma_subscription_app_index,
+                    &cs.ims_subscription_app_index};
+    for (int *i : index) {
+        if (*i >= cs.num_applications) *i = -1;
+    }
 }
 
 void readSignal(Parcel &p, RIL_SignalStrength_v10 &ss) {
