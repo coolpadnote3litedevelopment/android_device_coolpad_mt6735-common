@@ -1,5 +1,6 @@
 #include <new>
 
+#include <gui/BufferItemConsumer.h>
 #include <gui/BufferQueue.h>
 #include <ui/GraphicBuffer.h>
 #include <ui/GraphicBufferMapper.h>
@@ -21,6 +22,20 @@ extern "C" {
 
     void *_ZN7android13GraphicBufferC1Ejjij(void *thiz, uint32_t inWidth, uint32_t inHeight, int32_t inFormat, uint32_t inUsage) {
         return new (thiz) android::GraphicBuffer(inWidth, inHeight, inFormat, inUsage);
+    }
+
+    void *_ZN7android13GraphicBufferC1EjjijjP13native_handleb(void *thiz, uint32_t inWidth, uint32_t inHeight, int32_t inFormat, uint32_t inUsage, uint32_t inStride, native_handle_t *inHandle, bool keepOwnership) {
+        return new (thiz) android::GraphicBuffer(inWidth, inHeight, inFormat, 1, inUsage, inStride, inHandle, keepOwnership);
+    }
+
+    void *_ZN7android13GraphicBufferC1EP19ANativeWindowBufferb(void *thiz, ANativeWindowBuffer *buffer, bool keepOwnership) {
+        return new (thiz) android::GraphicBuffer(buffer->width, buffer->height, buffer->format, 1,
+                static_cast<uint32_t>(buffer->usage_deprecated), buffer->stride,
+                const_cast<native_handle_t *>(buffer->handle), keepOwnership);
+    }
+
+    void *_ZN7android18BufferItemConsumerC1ERKNS_2spINS_22IGraphicBufferConsumerEEEjib(void *thiz, const android::sp<android::IGraphicBufferConsumer>& consumer, uint32_t consumerUsage, int bufferCount, bool controlledByApp) {
+        return new (thiz) android::BufferItemConsumer(consumer, consumerUsage, bufferCount, controlledByApp);
     }
 
     void _ZN7android11BufferQueue17createBufferQueueEPNS_2spINS_22IGraphicBufferProducerEEEPNS1_INS_22IGraphicBufferConsumerEEERKNS1_INS_19IGraphicBufferAllocEEE(
