@@ -15,9 +15,21 @@
  */
 
 #include <pthread.h>
+#include <string.h>
+
+#undef bcopy
+#undef bzero
 
 extern "C" {
 pid_t __pthread_gettid(pthread_t t) {
     return pthread_gettid_np(t);
   }
+
+void bzero(void *s, size_t n) {
+    memset(s, 0, n);
+}
+
+void bcopy(const void *src, void *dst, size_t n) {
+    memmove(dst, src, n);
+}
 }
