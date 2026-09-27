@@ -9,4 +9,16 @@ allow init protect2_device:blk_file write;
 allow init debugfs:dir mounton;
 
 # Keep AT_SECURE off so the linker honours LD_SHIM_LIBS for the shimmed blobs
-allow init { mediaserver ril-daemon-mtk }:process noatsecure;
+allow init {
+    agpsd
+    audioserver
+    cameraserver
+    mediacodec
+    mediaserver
+    mnld
+    mobile_log_d
+    pq
+    ril-daemon-mtk
+    surfaceflinger
+    zygote
+}:process noatsecure;
