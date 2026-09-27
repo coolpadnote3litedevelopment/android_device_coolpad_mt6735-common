@@ -299,6 +299,13 @@ void VendorInterface::HandleIncomingEvent(const hidl_vec<uint8_t>& hci_packet) {
     tINT_CMD_CBACK saved_cb = internal_command.cb;
     internal_command.cb = nullptr;
     saved_cb(bt_hdr);
+  } else if (hci_packet.size() >= 8 && hci_packet[0] == 0x0e && hci_packet[3] == 0x04 &&
+             hci_packet[4] == 0x10 && hci_packet[7] > 1) {
+    // Read Local Extended Features: the chip reports max page 2 but fails
+    // the read of page 2, which the stack treats as fatal.
+    hidl_vec<uint8_t> event(hci_packet);
+    event[7] = 1;
+    event_cb_(event);
   } else {
     event_cb_(hci_packet);
   }
