@@ -531,6 +531,10 @@ void readResponse(Slot &slot, const Pending &req, RIL_Errno err, Parcel &p) {
             deliverStrings(t, err, v);
             break;
         }
+        case Out::IDENTITY_IMEI:
+        case Out::IDENTITY_IMEISV:
+            /* handled before the switch */
+            break;
     }
 }
 
