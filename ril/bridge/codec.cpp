@@ -355,6 +355,25 @@ void readResponse(Slot &slot, const Pending &req, RIL_Errno err, Parcel &p) {
     Arena a;
     RIL_Token t = req.token;
 
+    if (req.out == Out::IDENTITY_IMEI) {
+        char *imei = err == RIL_E_SUCCESS ? readString(p, a) : nullptr;
+        if (!imei) {
+            complete(t, err == RIL_E_SUCCESS ? RIL_E_GENERIC_FAILURE : err, nullptr, 0);
+            return;
+        }
+        slot.imei = imei;
+        if (!send(slot, RIL_REQUEST_GET_IMEISV, Out::IDENTITY_IMEISV, t, -1, Parcel())) {
+            complete(t, RIL_E_RADIO_NOT_AVAILABLE, nullptr, 0);
+        }
+        return;
+    }
+    if (req.out == Out::IDENTITY_IMEISV) {
+        char *sv = err == RIL_E_SUCCESS ? readString(p, a) : nullptr;
+        std::vector<char *> v = {a.str(slot.imei), sv ? sv : a.str(""), a.str(""), a.str("")};
+        complete(t, RIL_E_SUCCESS, v.data(), v.size() * sizeof(char *));
+        return;
+    }
+
     if (p.dataAvail() == 0 && req.out != Out::SETUP_DATA) {
         mtkResponse(slot, req, err, nullptr);
         complete(t, err, nullptr, 0);

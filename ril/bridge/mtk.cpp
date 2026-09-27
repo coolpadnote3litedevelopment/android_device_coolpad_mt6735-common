@@ -229,6 +229,12 @@ bool mtkRequest(Slot &slot, int request, const void *data, size_t len, RIL_Token
             }
             return false;
         }
+        case RIL_REQUEST_DEVICE_IDENTITY:
+            /* mtkrild only answers this on C2K builds; M asked for the IMEI directly */
+            if (!send(slot, RIL_REQUEST_GET_IMEI, Out::IDENTITY_IMEI, t, -1, Parcel())) {
+                complete(t, RIL_E_RADIO_NOT_AVAILABLE, nullptr, 0);
+            }
+            return true;
         case RIL_REQUEST_SET_INITIAL_ATTACH_APN:
             sendAttachApn(slot, Out::VOID, t, static_cast<const RIL_InitialAttachApn *>(data));
             return true;

@@ -94,6 +94,9 @@ enum class Out {
     OPERATOR,
     NETWORKS,
     DEVICE_ID,
+    /* DEVICE_IDENTITY built from GET_IMEI and GET_IMEISV */
+    IDENTITY_IMEI,
+    IDENTITY_IMEISV,
 };
 
 struct Pending {
@@ -115,6 +118,7 @@ struct Slot {
     std::map<int32_t, Pending> pending;
     /* identity requests that hit a powered-down modem, resent once the radio is on */
     std::vector<Pending> deferred;
+    std::string imei;
     /* cid per ccmni interface, -1 when free, CID_RESERVED while a setup is in flight */
     int dataCids[5] = {-1, -1, -1, -1, -1};
 };
