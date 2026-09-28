@@ -26,3 +26,4 @@ allow init {
 
 allow init debugfs:file w_file_perms;
 allow init tmpfs:lnk_file create_file_perms;
+allow init nvdata_file:lnk_file read;
