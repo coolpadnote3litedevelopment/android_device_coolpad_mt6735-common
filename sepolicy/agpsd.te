@@ -19,3 +19,6 @@ allow agpsd fuse:dir create_dir_perms;
 allow agpsd fuse:file create_file_perms;
 
 unix_socket_send(agpsd, mnld, mnld);
+
+# The linker stats every LD_SHIM_LIBS target in every process.
+dontaudit domain agpsd_exec:file getattr;
