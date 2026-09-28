@@ -70,7 +70,7 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := ui.cpp
-LOCAL_SHARED_LIBRARIES := libgui libui
+LOCAL_SHARED_LIBRARIES := libbinder libgui libui libutils
 LOCAL_MODULE := libshim_ui
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)

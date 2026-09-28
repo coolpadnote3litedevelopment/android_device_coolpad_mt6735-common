@@ -1,5 +1,6 @@
 #include <new>
 
+#include <binder/IBinder.h>
 #include <gui/BufferItemConsumer.h>
 #include <gui/BufferQueue.h>
 #include <ui/GraphicBuffer.h>
@@ -52,3 +53,16 @@ extern "C" {
         return _ZN7android5Fence4waitEi(thiz, static_cast<int>(timeout));
     }
 }
+
+namespace android {
+
+class IDumpTunnel : public virtual RefBase {
+public:
+    static sp<IDumpTunnel> asInterface(const sp<IBinder>& obj);
+};
+
+sp<IDumpTunnel> IDumpTunnel::asInterface(const sp<IBinder>& /* obj */) {
+    return nullptr;
+}
+
+}  // namespace android
