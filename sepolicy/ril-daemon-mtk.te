@@ -25,3 +25,4 @@ get_prop(ril-daemon-mtk, ril_mux_report_case_prop)
 
 allow ril-daemon-mtk proc:file r_file_perms;
 allow ril-daemon-mtk sysfs:file r_file_perms;
+allowxperm ril-daemon-mtk self:udp_socket ioctl priv_sock_ioctls;
