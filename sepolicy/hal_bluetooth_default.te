@@ -11,3 +11,4 @@ dontaudit hal_bluetooth_default nvram_device:blk_file { open read write };
 
 get_prop(hal_bluetooth_default, nvram_prop)
 get_prop(hal_bluetooth_default, wmt_prop)
+allow hal_bluetooth_default block_device:dir search;

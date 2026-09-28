@@ -30,3 +30,4 @@ allow nvram_daemon toolbox_exec:file rx_file_perms;
 dontaudit nvram_daemon device:dir write;
 allow nvram_daemon nvdata_file:lnk_file { getattr read setattr };
 get_prop(nvram_daemon, wmt_prop)
+allow nvram_daemon block_device:dir search;

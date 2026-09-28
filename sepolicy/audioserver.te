@@ -10,3 +10,4 @@ allow audioserver fm_device:chr_file rw_file_perms;
 set_prop(audioserver, audiohal_prop)
 allow audioserver sysfs:file r_file_perms;
 allow audioserver nvdata_file:lnk_file read;
+allow audioserver block_device:dir search;
