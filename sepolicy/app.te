@@ -1,1 +1,5 @@
 allow appdomain proc_ged:file r_file_perms;
+allow appdomain hal_graphics_allocator_default:fd use;
+allow appdomain hal_allocator_server:fd use;
+binder_call(appdomain, hal_graphics_allocator_server)
+allow { appdomain -isolated_app } hal_graphics_allocator_hwservice:hwservice_manager find;
