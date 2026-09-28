@@ -5,3 +5,4 @@ allow surfaceflinger debug_prop:property_service set;
 allow surfaceflinger proc_chip:dir r_dir_perms;
 allow surfaceflinger proc_chip:file r_file_perms;
 allow surfaceflinger proc_ged:file rw_file_perms;
+allow surfaceflinger mtk_cmdq_device:chr_file rw_file_perms;

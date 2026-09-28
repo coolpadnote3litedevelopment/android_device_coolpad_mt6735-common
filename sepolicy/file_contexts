@@ -42,6 +42,7 @@
 /dev/ttyGS0                                                     u:object_r:serial_device:s0
 /dev/gps(/.*)?                                                  u:object_r:gps_device:s0
 /dev/mali.*                                                     u:object_r:gpu_device:s0
+/dev/mtk_cmdq                                                   u:object_r:mtk_cmdq_device:s0
 /dev/mtk_disp.*                                                 u:object_r:graphics_device:s0
 /dev/sw_sync                                                    u:object_r:graphics_device:s0
 /dev/stpbt(/.*)?                                                u:object_r:stpbt_device:s0
