@@ -69,6 +69,13 @@ LOCAL_32_BIT_ONLY := true
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
+LOCAL_SRC_FILES := omx.cpp
+LOCAL_MODULE := libshim_omx
+LOCAL_MODULE_TAGS := optional
+LOCAL_32_BIT_ONLY := true
+include $(BUILD_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
 LOCAL_SRC_FILES := ui.cpp
 LOCAL_SHARED_LIBRARIES := libbinder libgui libui libutils
 LOCAL_MODULE := libshim_ui

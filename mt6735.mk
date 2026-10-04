@@ -147,6 +147,7 @@ PRODUCT_PACKAGES += \
     libshim_bionic \
     libshim_icu \
     libshim_ifc \
+    libshim_omx \
     libshim_sensor \
     libshim_sockets \
     libshim_ui \

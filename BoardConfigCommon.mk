@@ -144,6 +144,7 @@ TARGET_LD_SHIM_LIBS := \
     /system/lib/libdrmmtkutil.so|libshim_icu.so \
     /system/lib64/libdrmmtkutil.so|libshim_icu.so \
     /system/lib/libMtkOmxVdecEx.so|libshim_bionic.so \
+    /system/lib/libMtkOmxVdecEx.so|libshim_omx.so \
     /system/lib/libmtkjpeg.so|libshim_bionic.so \
     /system/lib/libvcodecdrv.so|libshim_bionic.so \
     /system/bin/volte_stack|libshim_bionic.so \
@@ -157,6 +158,7 @@ TARGET_LD_SHIM_LIBS := \
     /system/lib/libmtk_mmutils.so|libshim_ui.so \
     /system/lib64/libmtk_mmutils.so|libshim_ui.so \
     /system/lib/libMtkOmxVenc.so|libshim_ui.so \
+    /system/lib/libMtkOmxVenc.so|libshim_omx.so \
     /system/lib/libgui_ext.so|libshim_ui.so \
     /system/lib64/libgui_ext.so|libshim_ui.so \
     /system/lib/libmmsdkservice.feature.so|libshim_ui.so \
